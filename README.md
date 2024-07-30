@@ -27,8 +27,6 @@ This project is an Airline Notification System built using Java, RabbitMQ, MySQL
 - React JS
 - RabbitMQ
 
-
-
 ## Installation
 
 1. **Clone the repository:**
