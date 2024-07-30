@@ -181,7 +181,7 @@ This project is an Airline Notification System built using Java, RabbitMQ, MySQL
 
 ```
 
-This `README.md` provides a comprehensive guide to setting up and running your project, including installation steps, database setup, API endpoints, and instructions for testing the API. Make sure to replace placeholders like `yourusername` with actual values relevant to your project.
+This `README.md` provides a comprehensive guide to setting up and running the project, including installation steps, database setup, API endpoints, and instructions for testing the API.
 
 
 
