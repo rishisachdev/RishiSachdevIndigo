@@ -35,6 +35,14 @@ This project is an Airline Notification System built using Spring Boot, RabbitMQ
    ```sh
    mvn clean install
    ```
+## Images:
+## Email Notification: 
+![I](https://github.com/user-attachments/assets/5aab59bb-ad11-4224-bba9-f31a433d48fb)
+
+
+## SMS Notification:
+![N](https://github.com/user-attachments/assets/724f2552-896a-4c20-862e-7f27917cb6b6)
+
 
 ## Database Setup
 
@@ -168,6 +176,11 @@ This project is an Airline Notification System built using Spring Boot, RabbitMQ
      ```
 
 
+
 ```
 
 This `README.md` provides a comprehensive guide to setting up and running your project, including installation steps, database setup, API endpoints, and instructions for testing the API. Make sure to replace placeholders like `yourusername` with actual values relevant to your project.
+
+
+
+
