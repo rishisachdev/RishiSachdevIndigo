@@ -2,7 +2,7 @@
 
 # Airline Notification System
 
-This project is an Airline Notification System built using Java, RabbitMQ, MySQL, HTML, CSS, and React JS. The system allows airline admins to update flight statuses and automatically sends notifications whenever a flight status is changed.
+This project is an Airline Notification System built using Java, RabbitMQ, MySQL, SpringBoot, Maven, HTML, CSS, and React JS. The system allows airline admins to update flight statuses and automatically sends notifications whenever a flight status is changed.
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
