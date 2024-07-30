@@ -4,7 +4,7 @@ Here's a sample `README.md` file for your project:
 ```markdown
 # Airline Notification System
 
-This project is an Airline Notification System built using Spring Boot, RabbitMQ, and MySQL. The system allows airline admins to update flight statuses and automatically sends notifications whenever a flight status is changed.
+This project is an Airline Notification System built using Java, RabbitMQ, MySQL, HTML, CSS, and React JS. The system allows airline admins to update flight statuses and automatically sends notifications whenever a flight status is changed.
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -18,10 +18,16 @@ This project is an Airline Notification System built using Spring Boot, RabbitMQ
 - [License](#license)
 
 ## Prerequisites
-- Java 17 or higher
+- Java 8 or higher
+- SpringBoot
 - Maven
 - MySQL
+- HTML
+- CSS
+- React JS
 - RabbitMQ
+
+
 
 ## Installation
 
