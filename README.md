@@ -3,7 +3,7 @@
 
 
 ## Frontend :
-## Images of the Frontend(React JS) :
+## Images of the Web-App (React JS) :
 ![D](https://github.com/user-attachments/assets/add0b1d2-4b6a-43a2-b50d-fa19ff3a6812)
 
 ![image](https://github.com/user-attachments/assets/bb888bf5-af24-454d-b78c-e9c75c00026a)
