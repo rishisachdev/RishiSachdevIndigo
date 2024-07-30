@@ -1,0 +1,28 @@
+package com.airlineNotificationSystem.demo.model;
+
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import java.time.LocalDateTime;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "flight_notification")
+public class FlightNotification {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String flight_id;
+    private String old_status;
+    private String new_status;
+    private LocalDateTime notification_time;
+	
+    
+}

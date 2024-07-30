@@ -1,0 +1,24 @@
+package com.airlineNotificationSystem.demo.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "flight_status")
+public class Flight {
+    @Id
+    private String flightId;
+    private String airline;
+    private String status;
+    private String departureGate;
+    private String arrivalGate;
+    private String scheduledDeparture;
+    private String scheduledArrival;
+    private String actualDeparture;
+    private String actualArrival;
+    private int updated;
+
+    // Getters and setters
+}
+

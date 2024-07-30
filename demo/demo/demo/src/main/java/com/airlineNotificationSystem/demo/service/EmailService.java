@@ -1,0 +1,100 @@
+package com.airlineNotificationSystem.demo.service;
+
+import jakarta.mail.*;
+import jakarta.mail.Authenticator;
+import jakarta.mail.internet.*;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import okhttp3.*;
+
+@Service
+public class EmailService {
+
+	@Value("${mailgun.api.url}")
+    private String mailgunApiUrl;
+
+    @Value("${mailgun.api.key}")
+    private String mailgunApiKey;
+
+    @Value("${mailgun.from}")
+    private String mailgunFrom;
+
+    private final OkHttpClient client = new OkHttpClient();
+    
+    private static final String EMAIL_HOST = "sandbox.smtp.mailtrap.io";
+    private static final String EMAIL_PORT = "2525";
+    private static final String EMAIL_USER = "72fc4cce73b1c7";
+    private static final String EMAIL_PASSWORD = "f876ac487383ca";
+
+    public void sendEmailMail(String to, String subject, String body) {
+        String auth = Credentials.basic("api", mailgunApiKey);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("from", mailgunFrom)
+                .add("to", to)
+                .add("subject", subject)
+                .add("text", body)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(mailgunApiUrl)
+                .post(formBody)
+                .addHeader("Authorization", auth)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
+                System.out.println("Email sent successfully: " + response.body().string());
+            }
+        });
+    }
+    
+    public void sendNotification(String flightId, String status) {
+        String subject = "Flight Status Update";
+        String body = "Flight ID " + flightId + " status has been updated to " + status;
+
+        sendEmail("testnew957@gmail.com", subject, body);
+    }
+
+    public void sendEmail(String to, String subject, String body) {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", EMAIL_HOST);
+        properties.put("mail.smtp.port", EMAIL_PORT);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(EMAIL_USER, EMAIL_PASSWORD);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(EMAIL_USER));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(body);
+
+            Transport.send(message);
+            System.out.println("Notification sent successfully.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+}

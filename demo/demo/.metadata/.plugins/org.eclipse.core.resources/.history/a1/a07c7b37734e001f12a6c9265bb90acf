@@ -1,0 +1,25 @@
+package com.airlineNotificationSystem.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailService {
+
+    private final JavaMailSender emailSender;
+
+    @Autowired
+    public EmailService(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
+    public void sendFlightStatusChangeEmail(String to, String flightId, String oldStatus, String newStatus) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Flight Status Changed");
+        message.setText(String.format("Flight ID: %s\nOld Status: %s\nNew Status: %s", flightId, oldStatus, newStatus));
+        emailSender.send(message);
+    }
+}

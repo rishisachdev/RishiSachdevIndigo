@@ -1,0 +1,36 @@
+package com.airlineNotificationSystem.demo.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.airlineNotificationSystem.demo.model.Flight;
+import com.airlineNotificationSystem.demo.repository.FlightRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class FlightService {
+    @Autowired
+    private FlightRepository flightRepository;
+
+    public List<Flight> getAllFlights() {
+        return flightRepository.findAll();
+    }
+
+    public Optional<Flight> getFlightById(String flightId) {
+        return flightRepository.findById(flightId);
+    }
+
+    public Flight updateFlightStatus(String flightId, String newStatus) {
+        Optional<Flight> flightOptional = flightRepository.findById(flightId);
+        if (flightOptional.isPresent()) {
+            Flight flight = flightOptional.get();
+            flight.setStatus(newStatus);
+            return flightRepository.save(flight);
+        }
+        return null;
+    }
+}
+

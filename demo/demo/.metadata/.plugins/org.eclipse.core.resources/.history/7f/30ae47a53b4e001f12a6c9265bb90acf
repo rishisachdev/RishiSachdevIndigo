@@ -1,0 +1,59 @@
+package com.airlineNotificationSystem.demo.model;
+
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import java.time.LocalDateTime;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "flight_notification")
+public class FlightNotification {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String flightId;
+    private String oldStatus;
+    private String newStatus;
+    private LocalDateTime createdAt;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getFlightId() {
+		return flightId;
+	}
+	public void setFlightId(String flightId) {
+		this.flightId = flightId;
+	}
+	public String getOldStatus() {
+		return oldStatus;
+	}
+	public void setOldStatus(String oldStatus) {
+		this.oldStatus = oldStatus;
+	}
+	public String getNewStatus() {
+		return newStatus;
+	}
+	public void setNewStatus(String newStatus) {
+		this.newStatus = newStatus;
+	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+    // Getters and Setters
+    
+}

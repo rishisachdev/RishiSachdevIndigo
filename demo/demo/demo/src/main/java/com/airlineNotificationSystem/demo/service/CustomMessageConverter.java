@@ -1,0 +1,39 @@
+package com.airlineNotificationSystem.demo.service;
+
+import com.airlineNotificationSystem.demo.model.FlightNotification;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.MessageConversionException;
+
+public class CustomMessageConverter implements MessageConverter {
+
+    private final ObjectMapper objectMapper;
+
+    public CustomMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException {
+        try {
+            String json = objectMapper.writeValueAsString(object);
+            return new Message(json.getBytes(), messageProperties);
+        } catch (JsonProcessingException e) {
+            throw new MessageConversionException("Failed to convert to message", e);
+        }
+    }
+
+    @Override
+    public Object fromMessage(Message message) throws MessageConversionException {
+        try {
+            String json = new String(message.getBody());
+            return objectMapper.readValue(json, FlightNotification.class);
+        } catch (JsonProcessingException e) {
+            throw new MessageConversionException("Failed to convert from message", e);
+        }
+    }
+}
+

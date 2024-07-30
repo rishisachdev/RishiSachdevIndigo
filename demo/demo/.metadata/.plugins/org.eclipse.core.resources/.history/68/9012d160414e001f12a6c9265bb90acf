@@ -1,0 +1,28 @@
+package com.airlineNotificationSystem.demo.service;
+
+import com.airlineNotificationSystem.demo.model.FlightNotification;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FlightNotificationConsumer {
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @RabbitListener(queues = "your_queue_name")
+    public void receiveMessage(String message) {
+        try {
+            FlightNotification notification = objectMapper.readValue(message, FlightNotification.class);
+            // Handle notification
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

@@ -1,0 +1,34 @@
+package com.airlineNotificationSystem.demo;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class NotificationService {
+    @Autowired
+    private FlightService flightService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    private static final String QUEUE_NAME = "flight_status_notifications";
+
+    @Scheduled(fixedRate = 5000)
+    public void checkForUpdates() {
+        List<Flight> flights = flightService.getAllFlights();
+        for (Flight flight : flights) {
+            if (flight.getUpdated() == 1) {
+                String message = flight.getFlightId() + "," + flight.getStatus();
+                rabbitTemplate.convertAndSend(QUEUE_NAME, message);
+                flight.setUpdated(0); // Reset the updated flag
+                flightService.updateFlightStatus(flight.getFlightId(), flight.getStatus());
+                System.out.println("Sent notification for flight: " + flight.getFlightId());
+            }
+        }
+    }
+}
+

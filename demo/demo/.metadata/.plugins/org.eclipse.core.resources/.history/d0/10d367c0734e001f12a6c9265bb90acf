@@ -1,0 +1,55 @@
+package com.airlineNotificationSystem.demo.service;
+
+
+
+import javax.mail.*;
+import javax.mail.internet.*;
+
+import org.springframework.stereotype.Service;
+
+import java.util.Properties;
+
+@Service
+public class EmailService {
+
+    private static final String EMAIL_HOST = "sandbox.smtp.mailtrap.io";
+    private static final String EMAIL_PORT = "587";
+    private static final String EMAIL_USER = "72fc4cce73b1c7";
+    private static final String EMAIL_PASSWORD = "f876ac487383ca";
+
+    public static void sendNotification(String flightId, String status) {
+        String subject = "Flight Status Update";
+        String body = "Flight ID " + flightId + " status has been updated to " + status;
+
+        sendEmail("t4233389@gmail.com", subject, body);
+    }
+
+    public static void sendEmail(String to, String subject, String body) {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", EMAIL_HOST);
+        properties.put("mail.smtp.port", EMAIL_PORT);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(EMAIL_USER, EMAIL_PASSWORD);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(EMAIL_USER));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(body);
+
+            Transport.send(message);
+            System.out.println("Notification sent successfully.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

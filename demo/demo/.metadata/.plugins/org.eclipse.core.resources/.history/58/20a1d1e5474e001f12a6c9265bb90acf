@@ -1,0 +1,25 @@
+package com.airlineNotificationSystem.demo.service;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Configuration
+public class RabbitConfig {
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, CustomMessageConverter customMessageConverter) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(customMessageConverter);
+        return rabbitTemplate;
+    }
+
+    @Bean
+    public CustomMessageConverter customMessageConverter() {
+        return new CustomMessageConverter(new ObjectMapper());
+    }
+}
+

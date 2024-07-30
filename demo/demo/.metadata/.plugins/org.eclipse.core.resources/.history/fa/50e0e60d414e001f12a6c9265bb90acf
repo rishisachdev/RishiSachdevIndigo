@@ -1,0 +1,5 @@
+package com.airlineNotificationSystem.demo.service;
+
+public class FlightNotificationConsumer {
+
+}

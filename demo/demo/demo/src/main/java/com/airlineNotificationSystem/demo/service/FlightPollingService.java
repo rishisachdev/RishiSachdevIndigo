@@ -1,0 +1,55 @@
+package com.airlineNotificationSystem.demo.service;
+
+import com.airlineNotificationSystem.demo.model.FlightNotification;
+import com.airlineNotificationSystem.demo.repository.FlightNotificationRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class FlightPollingService {
+
+    private final FlightNotificationRepository flightNotificationRepository;
+    private final RabbitTemplate rabbitTemplate;
+    private final EmailService emailService;
+    private final SmsService smsService;
+
+    public FlightPollingService(FlightNotificationRepository flightNotificationRepository,
+                                RabbitTemplate rabbitTemplate,
+                                EmailService emailService,
+                                SmsService smsService) {
+        this.flightNotificationRepository = flightNotificationRepository;
+        this.rabbitTemplate = rabbitTemplate;
+        this.emailService = emailService;
+        this.smsService = smsService;
+    }
+
+    @Scheduled(fixedRate = 5000) // Poll every 5 seconds
+    public void pollForFlightStatusChanges() {
+        List<FlightNotification> notifications = flightNotificationRepository.findAll();
+        
+        for (FlightNotification notification : notifications) {
+            // Send notification to RabbitMQ
+            rabbitTemplate.convertAndSend("flightStatusExchange", "flightStatusRoutingKey", notification);
+            
+            smsService.sendSms(
+                    "+919538324600", // Replace with dynamic phone numbers if needed
+                    "Flight ID: " + notification.getFlight_id() + " status changed from " + notification.getOld_status() + " to " + notification.getNew_status()
+                );
+            
+         // Send email notification
+            emailService.sendNotification(
+                notification.getFlight_id(),
+                notification.getNew_status()
+            );
+            
+            emailService.sendEmailMail("testnew957@gmail.com", "FlightStatus Changed", "Flight status changed");
+            
+            
+            // Delete the notification from the database after processing
+            flightNotificationRepository.delete(notification);
+        }
+    }
+}

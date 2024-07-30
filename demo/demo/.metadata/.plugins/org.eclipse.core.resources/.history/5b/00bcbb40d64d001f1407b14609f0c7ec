@@ -1,0 +1,36 @@
+package com.airlineNotificationSystem.demo.controller;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/flights")
+public class FlightController {
+    @Autowired
+    private FlightService flightService;
+
+    @GetMapping
+    public List<Flight> getAllFlights() {
+        return flightService.getAllFlights();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Flight> getFlightById(@PathVariable String id) {
+        return flightService.getFlightById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Flight> updateFlightStatus(@PathVariable String id, @RequestBody Flight flight) {
+        Flight updatedFlight = flightService.updateFlightStatus(id, flight.getStatus());
+        if (updatedFlight != null) {
+            return ResponseEntity.ok(updatedFlight);
+        }
+        return ResponseEntity.notFound().build();
+    }
+}

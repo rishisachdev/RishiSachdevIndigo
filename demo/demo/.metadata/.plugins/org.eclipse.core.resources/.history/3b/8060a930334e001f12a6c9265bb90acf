@@ -1,0 +1,30 @@
+# Application name
+spring.application.name=demo
+
+# Database configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/flight_db
+spring.datasource.username=admin
+spring.datasource.password=Parrot@123
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Hibernate settings for better performance (optional)
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+spring.jpa.properties.hibernate.generate_statistics=false
+
+# RabbitMQ configuration
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+
+# Optional RabbitMQ settings (if needed)
+# spring.rabbitmq.username=guest
+# spring.rabbitmq.password=guest
+# spring.rabbitmq.virtual-host=/
+# spring.rabbitmq.connection-timeout=60000
+# spring.rabbitmq.requested-heartbeat=60
+
+# Logging settings (optional)
+logging.level.org.springframework=INFO
+logging.level.com.airlineNotificationSystem=DEBUG

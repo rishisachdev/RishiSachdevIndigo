@@ -1,0 +1,44 @@
+package com.airlineNotificationSystem.demo.service;
+
+import com.airlineNotificationSystem.demo.model.FlightNotification;
+import com.airlineNotificationSystem.demo.repository.FlightNotificationRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class FlightPollingService {
+
+    private final FlightNotificationRepository flightNotificationRepository;
+    private final RabbitTemplate rabbitTemplate;
+    private final EmailService emailService;
+
+    public FlightPollingService(FlightNotificationRepository flightNotificationRepository,
+                                RabbitTemplate rabbitTemplate,
+                                EmailService emailService) {
+        this.flightNotificationRepository = flightNotificationRepository;
+        this.rabbitTemplate = rabbitTemplate;
+        this.emailService = emailService;
+    }
+
+    @Scheduled(fixedRate = 5000) // Poll every 5 seconds
+    public void pollForFlightStatusChanges() {
+        List<FlightNotification> notifications = flightNotificationRepository.findAll();
+        
+        for (FlightNotification notification : notifications) {
+            // Send notification to RabbitMQ
+            rabbitTemplate.convertAndSend("flightStatusExchange", "flightStatusRoutingKey", notification);
+            // Send email notification
+            emailService.sendFlightStatusChangeEmail(
+            		, // Replace with dynamic email addresses if needed
+                notification.getFlight_id(),
+                notification.getOld_status(),
+                notification.getNew_status()
+            );
+            // Delete the notification from the database after processing
+            flightNotificationRepository.delete(notification);
+        }
+    }
+}
